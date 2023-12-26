@@ -1,21 +1,33 @@
-# Omer, Neil <> Elior - 100 back analysis.
+# Omer - 100 back.
 
 ## 1. Race report. (Frequency/DPS/Speed).
 
 ## 2. UWs, breakouts.
 
-### 2.1.
-UW: 15m, 0 -> 5.8s (2.59 m/sec)
-Breakout:1. Body-length from 5.5 to 7.133, decrease from 2.5 m/s to 1.53 m/s :-(
+UW1
 
-### 2.2
-UW: 12.72m, 12.76 -> 17.1 (2.8 m/sec) Damn!
-Body-length from 17.1s to 19.266s, decrease from 2.5 m/s to 2.17 m/s (Very good)
+---
 
-### 2.3
-UW 11.84m, 24.67 -> 30.03 (2.2 m/sec)
-5.06m from 30.03s to 32.9s (1.94 m/sec) (Very good)
+* **UW** distance: 14m, start: 0s, end: 5.27s, speed: 2.65m/sec
+* **Breakout**  distance: 4.77m, start: 5.27s, end: 7.73s, speed: 1.9m/s (28% speed-loss).
 
-### 2.4
-UW 10.71m, 38.2 -> 42.967 (2.24 m/sec)
-2.32m from 42.967 to 45.4 (1.76 m/sec)
+UW2
+
+---
+
+* **UW** distance: 12.72m start: 12.70s, end: 17.1m, speed: 2.89 m/sec
+* **breakout** distance: 6.17m, start: 17.1s, end: 19.6s, speed: 2.47 m/s (14% speed-loss).
+
+UW3
+
+---
+
+* **UW** distance: 11.64m, start: 24.533, end: 30.03, speed: 2.18 m/sec
+* **breakout** distance: 5.06m, start: 30.03s, end: 32.9s, speed: 1.94 m/sec (11% speed-loss).
+
+UW4:
+
+---
+
+* **UW** distance: 11.14m, start: 38.2m, finish: 43.0, speed: 2.32 m/sec
+* **breakout** distance: 4.34m, start: 43s, end: 45.47s, speed: 1.75 m/sec (24% speed-loss).
