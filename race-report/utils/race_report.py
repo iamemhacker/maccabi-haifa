@@ -63,8 +63,8 @@ def get_bo_indices(df: pd.DataFrame) -> List[int]:
     return ret
 
 
-def format_distance(d: int) -> str:
+def format_distance(d: float) -> str:
     """
     Formats a human readable label for the given distance.
     """
-    return f"{d}m"
+    return f"{int(d)}m"

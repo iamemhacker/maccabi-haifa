@@ -36,11 +36,16 @@ def plot_speed(df: pd.DataFrame, ax: matplotlib.axes.Axes) -> None:
     
     
 def plot_dps(df: pd.DataFrame, ax: matplotlib.axes.Axes) -> None:
+    """
+    Plots #of cycle for each lap.
+    """
     num_cycles = []
     for m in df[RR.COL_MES]:
         if m == RR.VAL_BO:
             num_cycles.append(0)
         else:
+            if not num_cycles:
+                num_cycles.append(0)
             num_cycles[-1] += 1
     df_stroke_count = pd.DataFrame({"Lap": range(1, len(num_cycles)+1), "#Cycles": num_cycles})
     sns.barplot(data=df_stroke_count, y="#Cycles", x="Lap", alpha=0.3, ax=ax)
