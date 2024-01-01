@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
 import seaborn as sns
+from scipy.stats import linregress
+from typing import Tuple
 
 
 def read_data(path: str, swimmer_name: str) -> pd.DataFrame:
@@ -81,3 +82,12 @@ def display_analysis(df: pd.DataFrame) -> None:
     display(df.sort_values(["Speed"], ascending=[False]))
     __plot3d(df)
     __dervatives(df)
+    
+
+def derive_dvdf(df: pd.DataFrame) -> Tuple[float, float]:
+    """
+    Returns a tuple; in which the first number is the slope of the derivative of dV/Df, assuming it is linear.
+    The second number is the Pvalue, whereas the NULL-hypo is that the slope is 0.
+    """
+    result = linregress(df["Frequency"], y=df["Speed"], alternative='two-sided')
+    return (round(f, 2) for f in [result.slope, result.pvalue])
