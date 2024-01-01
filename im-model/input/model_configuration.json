@@ -1,0 +1,12 @@
+{
+    "frequency_limits": {
+        "fly" : [33, 47],
+        "bk": [32, 45],
+        "bs": [30, 48],
+        "fr": [40, 48]
+    },
+    "total_energy": 44,
+    "efficiency_factors": [0.3, 0.5, 0.1, 0.1],
+    "fatigue_factors": [0.35, 0.2, 0.3, 0.15],
+    "dps": [1.7, 2.1, 1.9, 2.1]
+}
