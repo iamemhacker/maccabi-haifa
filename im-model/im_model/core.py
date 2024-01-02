@@ -25,6 +25,15 @@ class ModelConfig:
     fatigue_factors: List[float]
 
 
+@dataclass
+class TimeCalcConfig:
+    dps: List[float]
+    uw_fly: Tuple[float, float]
+    uw_bk: Tuple[float, float]
+    uw_bs: Tuple[float, float]
+    uw_fr: Tuple[float, float]
+
+
 def __parse_config(d: Dict[str, Any]) -> ModelConfig:
     """
     Converts the raw JSON data into a typed model configuration object.
@@ -45,6 +54,16 @@ def __parse_config(d: Dict[str, Any]) -> ModelConfig:
                        fatigue_factors=d["fatigue_factors"])
 
 
+def __parse_time_data(d: Dict[str, Any]) -> TimeCalcConfig:
+    dps = d["dps"]
+    [uw_fly, uw_bk, uw_bs, uw_fr] = [d["uw_td"][k] for k in ["fly", "bk", "bs", "fr"]]
+    return TimeCalcConfig(dps=dps,
+                          uw_fly=uw_fly,
+                          uw_bk=uw_bk,
+                          uw_bs=uw_bs,
+                          uw_fr=uw_fr)
+
+
 def __stroke_frequency_limits(config: ModelConfig) \
   -> List[Tuple[float, float]]:
     """
@@ -63,7 +82,6 @@ def optimize_400im(input_dir: str) -> List[str]:
     # Bounds for the frequency of each stroke.
     bounds = __stroke_frequency_limits(config)
 
-    print(f"EF: {config.efficiency_factors}")
     res = OPT.linprog(
         c=-1*np.array(config.efficiency_factors),
         A_ub=np.array([config.fatigue_factors]),
@@ -78,19 +96,26 @@ def optimize_200im(input_dir: str) -> List[str]:
 
 
 def estimate_time(input_dir: str, frequencies: List[float]) -> str:
-    LAP_LEN = 50
+    # 100m for each stroke.
+    STROKE_LEN = 100
 
     with open(os.path.join(input_dir, "model_configuration.json")) as \
          config_file:
-        config = json.loads(config_file.read())
-        dps = config["dps"]
-        assert (len(dps) == 4 and len(frequencies) == 4), \
-            f"Expected DPS and Frequencies both to be 4. (Got {len(dps)} and {len(frequencies)})"
-        times = []
-        for (d, f) in zip(dps, frequencies):
-            num_cycles = LAP_LEN/d
-            lap_time = num_cycles * (60/f)
-            times.append(lap_time * (100/LAP_LEN))
+        time_data = __parse_time_data(json.loads(config_file.read()))
+
+    uw_td = [time_data.uw_fly, time_data.uw_bk, time_data.uw_bs, time_data.uw_fr]
+    times = []
+
+    for (dps, f, uw) in zip(time_data.dps, frequencies, uw_td):
+        # UW time and distance, per stroke.
+        (uw_t, uw_d) = uw
+        num_cycles = (STROKE_LEN - uw_d)/(dps)
+
+        # Surfaced swim time for the stroke.
+        stroke_time = num_cycles * (60/f)
+
+        # Adding up the surfaced and uw swim-time.
+        times.append(stroke_time + uw_t)
 
     total_time = sum(times)
     (min, sec) = (total_time // 60, round(total_time % 60, 2))
