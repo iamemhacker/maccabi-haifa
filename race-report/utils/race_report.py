@@ -40,7 +40,7 @@ def calc_speed(df: pd.DataFrame, index: List[int]) -> pd.DataFrame:
     def __calc_diff(row: pd.Series) -> float:
         return row.iloc[1] - row.iloc[0] if len(row) > 1 else row.iloc[0]
 
-    (col_d_split, col_t_split) = ("split-distnace", "split-time")
+    (col_d_split, col_t_split) = ("split-distance", "split-time")
     df_tmp = df.copy()
     (rel_col_d, rel_col_t) = (
         df_tmp[col_d_split] \
