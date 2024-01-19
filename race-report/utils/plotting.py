@@ -6,16 +6,16 @@ import matplotlib
 from typing import List
 
 
-def plot_frequency(df: pd.DataFrame, ax: matplotlib.axes.Axes
-                   , lap_indices: List[int]
-                   , distances: List[str]) -> None:
+def plot_frequency(df: pd.DataFrame, ax: matplotlib.axes.Axes, lap_len: int=50) -> None:
     """
     Plots frequency as function of distance.
     """
+    num_laps = df[RR.COL_X].iloc[-1] // lap_len
     graph = sns.lineplot(data=df, y=RR.COL_Y, x=RR.COL_X, ax=ax)
-    for lap_idx in lap_indices:
-        RR.add_vertical(graph, lap_idx)
-    ax.set_xticks(labels=distances, ticks=lap_indices)
+
+    for lap in range(num_laps):
+        for d in [m for m in [15, 25, 35, 50] if m <= lap_len]:
+            RR.add_vertical(graph=graph, idx=(d + (lap * lap_len)))
     # TODO: should the limit be dynamic?
     ax.set_ylim([30, 70])
     ax.set_title("Frequency/Distance")
