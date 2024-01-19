@@ -49,4 +49,5 @@ def plot_dps(df: pd.DataFrame, ax: matplotlib.axes.Axes) -> None:
             num_cycles[-1] += 1
     df_stroke_count = pd.DataFrame({"Lap": range(1, len(num_cycles)+1), "#Cycles": num_cycles})
     sns.barplot(data=df_stroke_count, y="#Cycles", x="Lap", alpha=0.3, ax=ax)
+    ax.bar_label(ax.containers[0], label="#strokes")
     ax.set_title("#Cycles/Lap")
