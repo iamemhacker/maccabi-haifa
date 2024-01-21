@@ -24,13 +24,23 @@ def calc_frequency(df: pd.DataFrame) -> Tuple[Stats, pd.DataFrame]:
     Adds the frequency column to the given dataframe, and
     calculates distribution statistics.
     """
-    df_tmp = df.copy()
-    frequencies = df_tmp[COL_Y]
+    #
+    # Y axis: Frquency.
+    #
+    df_frequency = df[[COL_MES, COL_TIME]][df[COL_MES] == VAL_CYCLE]
+    df_frequency.loc[:, COL_Y] = (60 / df[COL_TIME])
+    frequencies = df_frequency[COL_Y]
     mean, std = np.mean(frequencies), np.std(frequencies)
-    lower, upper = mean-std, mean+std
-    df_tmp[COL_Y] = df_tmp[COL_Y].clip(lower=lower, upper=upper).round(2)
-    df_tmp[COL_X] = df_tmp.index
-    return (Stats(std=std, mean=mean), df_tmp)
+    lower, upper = mean - std, mean + std
+    df_frequency.loc[:, COL_Y] = df_frequency[COL_Y] \
+        .clip(lower=lower, upper=upper) \
+        .round(2)
+        
+    #
+    # X axis: Time.
+    #
+    df_frequency["time"] = df[COL_TIME].cumsum()
+    return (Stats(std=std, mean=mean), df_frequency[["time", COL_Y]])
 
 
 def calc_speed(df: pd.DataFrame, index: List[int]) -> pd.DataFrame:
