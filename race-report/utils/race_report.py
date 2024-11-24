@@ -68,7 +68,7 @@ def add_vertical(graph:plt.figure, idx: int) -> None:
 
     
 def get_bo_indices(df: pd.DataFrame) -> List[int]:
-    ret = [idx for idx in df[df[COL_MES] == VAL_BO].index[1:]]
+    ret = [idx for idx in df[df[COL_MES] == VAL_BO].index]
     ret.append(df.index[-1])
     return ret
 

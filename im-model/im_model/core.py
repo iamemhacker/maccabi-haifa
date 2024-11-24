@@ -118,5 +118,6 @@ def estimate_time(input_dir: str, frequencies: List[float]) -> str:
         times.append(stroke_time + uw_t)
 
     total_time = sum(times)
+    print(', '.join([str(t) for t in times]))
     (min, sec) = (total_time // 60, round(total_time % 60, 2))
     return f"{int(min)}:{sec}"

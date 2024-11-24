@@ -16,9 +16,12 @@ def plot_frequency(df: pd.DataFrame, bo_indices: pd.Series,
     df_tmp[RR.COL_Y] = df[RR.COL_Y].rolling(window=6, step=6).mean()
     graph = sns.lineplot(data=df_tmp, y=RR.COL_Y, x="time", marker="o",
                          ax=ax)
+    # print(f"emhacker bo indices {bo_indices}")
+    # print(f"emhacekr data indices {df_tmp['time']}")
+    last_time_idx = df_tmp.shape[0] - 1
     for idx in bo_indices[1:]:
         # Add the wall touches as vertical.
-        RR.add_vertical(graph=graph, idx=df.loc[:, "time"].iloc[idx])
+        RR.add_vertical(graph=graph, idx=df.loc[:, "time"].iloc[min(last_time_idx, idx)])
     RR.add_vertical(graph=graph, idx=df.loc[:, "time"].iloc[-1])
     ax.set_ylim([30, 70])
     ax.set_title("Frequency/Time")
